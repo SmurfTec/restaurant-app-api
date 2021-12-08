@@ -43,21 +43,6 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords are not the same!',
     },
   },
-  activationLink: {
-    type: String,
-  },
-  socialLogins: [
-    {
-      type: String,
-      enum: ['google', 'facebook'],
-    },
-  ],
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  activated: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 // userSchema.pre(/^find/, function (next) {
@@ -75,30 +60,11 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.methods.createAccountActivationLink = function () {
-  const activationToken = crypto.randomBytes(32).toString('hex');
-  // console.log(activationToken);
-  this.activationLink = crypto.createHash('sha256').update(activationToken).digest('hex');
-  // console.log({ activationToken }, this.activationLink);
-  return activationToken;
-};
-
-// comparing password
-userSchema.methods.correctPassword = async function (candidate_Password, user_Password) {
-  console.log(candidate_Password);
-  return await bcrypt.compare(candidate_Password, user_Password);
-};
-
-userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString('hex');
-
-  console.log(resetToken);
-
-  this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-
-  // console.log({ resetToken }, this.passwordResetToken);
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-  return resetToken;
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 const User = mongoose.model('User', userSchema);
