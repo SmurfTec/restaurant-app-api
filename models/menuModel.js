@@ -4,6 +4,7 @@ const menuSchema = new mongoose.Schema({
   name: { type: String, requird: [true, 'Menu Name is required'] },
   items: [
     {
+      _id: String,
       name: String,
       price: Number,
       description: String,
