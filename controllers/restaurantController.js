@@ -97,9 +97,9 @@ exports.addMenuToRestaurant = catchAsync(async (req, res, next) => {
     });
 
   await restaurant.save();
-  // await Restaurant.populate(restaurant, {
-  //   path: 'meals.menu',
-  // });
+  await Restaurant.populate(restaurant, {
+    path: 'meals.menu',
+  });
 
   res.status(200).json({
     status: 'success',
