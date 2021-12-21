@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ['user', 'admin'],
-    default: 'user',
+    default: 'admin',
   },
   password: {
     type: String,
@@ -44,10 +44,6 @@ const userSchema = new mongoose.Schema({
     },
   },
 });
-
-// userSchema.pre(/^find/, function (next) {
-//   next();
-// });
 
 // Encrpt the password ad Presave it
 userSchema.pre('save', async function (next) {

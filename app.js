@@ -78,7 +78,7 @@ app.use((req, res, next) => {
 // app.use('/api/users', userRouter); // TODO Remove this in future
 app.use('/api/auth', authRoutes);
 app.use('/api/restaurants', restaurantRouter);
-app.get('/api/users/me', protect, userController.getMe, userController.getUser);
+app.use('/api/users', userRouter);
 app.use('/api/menus', menuRouter);
 
 // handling all (get,post,update,delete.....) unhandled routes

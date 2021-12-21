@@ -6,24 +6,22 @@ const restrictTo = require('../middlewares/restrictTo');
 
 const router = express.Router();
 
-router.use(protect); //  protect all router which are comming after this middleware
+router
+  .route('/')
+  .get(protect, userController.getAllUsers)
+  .post(userController.createUser);
 
 router
   .route('/me')
-  .get(userController.getMe, userController.getUser)
-  .patch(userController.getMe, userController.updateUser);
+  .get(protect, userController.getMe, userController.getUser)
+  .patch(protect, userController.getMe, userController.updateUser);
 
 router.patch('/updatePassword', authController.updatePassword);
 
 router
-  .route('/')
-  .get(userController.getAllUsers)
-  .post(restrictTo('admin'), userController.createUser);
-
-router
   .route('/:id')
-  .get(userController.getUser)
-  .patch(userController.updateUser)
-  .delete(restrictTo('admin'), userController.deleteUser);
+  .get(protect, userController.getUser)
+  .patch(protect, userController.updateUser)
+  .delete(protect, restrictTo('admin'), userController.deleteUser);
 
 module.exports = router;
